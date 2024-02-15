@@ -4,40 +4,22 @@ import requests
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-u","--url", help="Input a URL i.e. https, http, ftp, etc..")
-parser.add_argument("-f","--file", help="Input file location")
 parser.add_argument("-o","--output", help="Output file location")
 parser.add_argument("-c","--cookie", help="Add URL cookie, in the form \"PHPSESSID=qw32312313\"")
 args = parser.parse_args()
 
-if(args.file is not None or args.url is not None):
-    print (u"""
-.___     ..__         ,      .___      .
-[__ ._  _|[__) _ *._ -+- ___ [__ *._  _| _ ._.
-[___[ )(_]|   (_)|[ ) |      |   |[ )(_](/,[
-
-            author: $_SpyD3r_$
-""")
-else:
-    parser.print_help()
-    exit()
-
-content1 = []
-
-if args.file:
-    with open(args.file,'r') as f:
-        content1 = f.read().split('"')
 if args.url:
     url=args.url
     if args.cookie:
         cookie = args.cookie.split("=")
         req=requests.get(url,cookies={cookie[0]:cookie[1]})
-        content1=req.text.split('"')
+        content = req.text.split('"')
     else:
         req=requests.get(url)
-        content1=req.text.split('"')
+        content = req.text.split('"')
 
 end_point = []
-extension=(".png",".jpg",".wav",".jpeg",".json",".js",".php",".xml")    #more can be added, as requirement
+extension=(".png",".jpg",".wav",".jpeg",".json",".js",".php",".xml")    
 start = ("/","http://","https://","file://","php://","ftp://","./","../")
 
 def end_points(content):
@@ -60,8 +42,9 @@ def saving_in_file(end_point):
         f.write("\n")
 
 def print_end_points(end_point):
+    print(f'\n Scaning: {url} \n')
     start1=("http://","https://","file://","php://","ftp://")
-    a="\n-----------------Remote files which are added-----------------------------------\n"
+    a=""
     if args.output: 
         saving_in_file(a)
     print (a)
@@ -71,7 +54,7 @@ def print_end_points(end_point):
             if args.output: 
                 saving_in_file(i)
 
-    b="\n-----------------These files are present in server------------------------------\n"
+    b=""
     print (b)
     if args.output: 
         saving_in_file(b)
@@ -81,7 +64,7 @@ def print_end_points(end_point):
             if args.output: 
                 saving_in_file(i)
 
-    c="\n-----------------These are files and directory, you can look into---------------\n"
+    c=""
     print (c)
     if args.output: 
         saving_in_file(c)
@@ -93,7 +76,7 @@ def print_end_points(end_point):
                 saving_in_file(i)
 
 
-    print("\n-----------------These directory can be present (not sure!!)--------------------\n")
+    print("")
     for i in end_point:
         if not i.startswith(start) and not i.endswith(extension):
             print (i)
@@ -102,6 +85,6 @@ def print_end_points(end_point):
 
 
 if __name__=='__main__':
-    end_points(content1)
+    end_points(content)
     end_point = set(end_point)
     print_end_points(end_point)
