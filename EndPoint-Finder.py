@@ -42,7 +42,11 @@ def saving_in_file(end_point):
         f.write("\n")
 
 def print_end_points(end_point):
-    print(f'\n Scaning: {url} \n')
+    a1 = f'\nURL: {url}'
+    if args.output:
+        saving_in_file(a1)
+    print (a1)
+
     start1=("http://","https://","file://","php://","ftp://")
     a=""
     if args.output: 
@@ -74,7 +78,12 @@ def print_end_points(end_point):
             print (i)
             if args.output: 
                 saving_in_file(i)
-
+    
+    d="---------------------------------------------------------------------------------------------------------------------"
+    print (d)
+    if args.output: 
+        saving_in_file(d)
+    
 
     print("")
     for i in end_point:
